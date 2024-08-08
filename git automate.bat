@@ -66,6 +66,7 @@ if /i "%mode_d_w%"=="DARK" (
     goto :q_mode
 )
 cls
+goto :title_1
 :menu
 if /i "%mode_d_w%"=="DARK " (
     color 0F
@@ -170,7 +171,7 @@ if exist "%verif_txt_file%" (
         if !compteur! == 3 set mode_d_w=%%l
         set /a compteur+=1
     )
-    goto :title_1
+    goto :menu
 ) else (
     goto :config_user
 )
