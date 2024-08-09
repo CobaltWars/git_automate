@@ -164,6 +164,30 @@ goto :eof
 
 for /f "delims=: tokens=*" %%A in ('findstr /b :::: "%~f0"') do @echo(%%A
 
+:: Vérifie si Git est installé
+:install_version
+git --version > nul 2>&1
+if %errorlevel% neq 0 (
+  :: Si Git n'est pas installé, télécharge et installe Git
+  set /p 64_or_32 =Git n'est pas installe. Quel est la version compatible avec votre ordinateur ? (64/32)
+  if %64_or_32% =="64" (
+    powershell -Command "Invoke-WebRequest -Uri https://github.com/git-for-windows/git/releases/download/v2.46.0.windows.1/Git-2.46.0-64-bit.exe -OutFile Git-2.46.0-64-bit.exe"
+    start /wait Git-2.46.0-64-bit.exe
+    echo Git a été installé avec succès !
+  ) else if %64_or_32% == "32" (
+    powershell -Command "Invoke-WebRequest -Uri https://github.com/git-for-windows/git/releases/download/v2.46.0.windows.1/Git-2.46.0-32-bit.exe -OutFile Git-2.46.0-32-bit.exe"
+    start /wait Git-2.46.0-32-bit.exe
+    echo Git a été installé avec succès !
+  ) else (
+    echo Veuillez entrer une information valide.
+    goto :install_version
+  )
+  goto :verif_file
+) else (
+  goto :verif_file
+)
+
+:verif_file
 if exist "%verif_txt_file%" (
     for /f "tokens=*" %%l in (info_user.txt) do (
         if !compteur! == 1 set email=%%l
