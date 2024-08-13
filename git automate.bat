@@ -103,6 +103,7 @@ if /i "%mode_d_w%"=="DARK" (
     goto :q_mode
 )
 cls
+set restart_lobby=1
 goto :title_1
 :menu
 set restart_lobby=1
